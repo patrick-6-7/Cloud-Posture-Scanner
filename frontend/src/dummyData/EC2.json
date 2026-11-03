@@ -1,0 +1,34 @@
+[
+  {
+    "id": "i-0a1b2c3d4e5f6g7h8",
+    "type": "t3.medium",
+    "region": "us-east-1",
+    "ip": "54.23.11.101",
+    "sgs": ["web-sg", "common-sg"],
+    "status": "Running"
+  },
+  {
+    "id": "i-9i8h7g6f5e4d3c2b1",
+    "type": "m5.large",
+    "region": "us-west-2",
+    "ip": "3.120.45.22",
+    "sgs": ["db-sg"],
+    "status": "Running"
+  },
+  {
+    "id": "i-1a2b3c4d5e6f7g8h9",
+    "type": "t3.micro",
+    "region": "eu-central-1",
+    "ip": "18.194.22.5",
+    "sgs": ["bastion-sg"],
+    "status": "Stopped"
+  },
+  {
+    "id": "i-5f6g7h8i9j0k1l2m3",
+    "type": "c6g.xlarge",
+    "region": "us-east-1",
+    "ip": "54.23.11.105",
+    "sgs": ["app-sg", "common-sg"],
+    "status": "Running"
+  }
+]

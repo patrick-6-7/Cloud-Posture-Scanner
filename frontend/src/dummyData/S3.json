@@ -1,0 +1,30 @@
+[
+  {
+    "name": "prod-user-assets-01",
+    "region": "us-east-1",
+    "encryption": "AES256",
+    "policy": "Private",
+    "status": "Secure"
+  },
+  {
+    "name": "company-public-docs",
+    "region": "us-east-1",
+    "encryption": "AWS-KMS",
+    "policy": "Public",
+    "status": "Exposed"
+  },
+  {
+    "name": "backup-vault-west",
+    "region": "us-west-2",
+    "encryption": "AES256",
+    "policy": "Private",
+    "status": "Secure"
+  },
+  {
+    "name": "temp-logs-archive",
+    "region": "eu-central-1",
+    "encryption": "None",
+    "policy": "Private",
+    "status": "Warning"
+  }
+]
