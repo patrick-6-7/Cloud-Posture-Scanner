@@ -1,13 +1,11 @@
 const logger = require('../utils/logger.js');
 
-const userRouter = require('../routes/users.js');
-const productRouter = require('../routes/products.js');
+const healthRouter = require('../routes/health.js');
 
 class RoutesLoader {
     constructor() {
         this.routes = [
-            { path: '/users',          router: userRouter,          name: 'User Router'         },
-            { path: '/products',       router: productRouter,       name: 'Product Router'       },
+            { path: '/health',         router: healthRouter,        name: 'Health Router'        },
         ];
     }
 

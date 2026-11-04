@@ -7,7 +7,7 @@ const app = express();
 
 async function main() {
 	logger.info('Loading Server... \n');
-	await Loader.initializeApp(app, process.env.PORT, process.env.MONGODB_URI);
+	await Loader.initializeApp(app, process.env.PORT);
 }
 
 main();
