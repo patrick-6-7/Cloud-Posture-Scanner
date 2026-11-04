@@ -48,3 +48,39 @@ InvalidAccessKeyId: The AWS Access Key Id you provided does not exist in our rec
     at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\middleware-sdk-s3\dist-cjs\submodules\s3\index.js:62:28
     at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\middleware-sdk-s3\dist-cjs\submodules\s3\index.js:89:20
     at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\core\dist-cjs\submodules\client\index.js:127:26
+4 NOVEMBER 2026 | 3:59 PM [ERROR]: Failed To Load Server listen EADDRINUSE: address already in use :::5000
+Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\me\Visiblaze\backend\node_modules\express\lib\application.js:605:24)
+    at D:\me\Visiblaze\backend\src\loaders\app.js:7:17
+    at new Promise (<anonymous>)
+    at AppLoader.loadApp (D:\me\Visiblaze\backend\src\loaders\app.js:5:15)
+    at Loader.initializeApp (D:\me\Visiblaze\backend\src\loaders\loader.js:15:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async main (D:\me\Visiblaze\backend\src\index.js:10:2)
+4 NOVEMBER 2026 | 3:59 PM [ERROR]: Request failed: GET /cis-results/nope Unknown CIS check: nope
+NotFound: Unknown CIS check: nope
+    at CISService.runCheck (D:\me\Visiblaze\backend\src\services\cisService.js:18:33)
+    at getCisResult (D:\me\Visiblaze\backend\src\controllers\cisResults.js:10:37)
+    at Layer.handleRequest (D:\me\Visiblaze\backend\node_modules\router\lib\layer.js:152:17)
+    at next (D:\me\Visiblaze\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (D:\me\Visiblaze\backend\node_modules\router\lib\route.js:117:3)
+    at handle (D:\me\Visiblaze\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (D:\me\Visiblaze\backend\node_modules\router\lib\layer.js:152:17)
+    at D:\me\Visiblaze\backend\node_modules\router\index.js:295:15
+    at param (D:\me\Visiblaze\backend\node_modules\router\index.js:600:14)
+    at param (D:\me\Visiblaze\backend\node_modules\router\index.js:610:14)
+4 NOVEMBER 2026 | 4:00 PM [ERROR]: Failed To Load Server listen EADDRINUSE: address already in use :::5055
+Error: listen EADDRINUSE: address already in use :::5055
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (D:\me\Visiblaze\backend\node_modules\express\lib\application.js:605:24)
+    at D:\me\Visiblaze\backend\src\loaders\app.js:7:17
+    at new Promise (<anonymous>)
+    at AppLoader.loadApp (D:\me\Visiblaze\backend\src\loaders\app.js:5:15)
+    at Loader.initializeApp (D:\me\Visiblaze\backend\src\loaders\loader.js:15:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async main (D:\me\Visiblaze\backend\src\index.js:10:2)

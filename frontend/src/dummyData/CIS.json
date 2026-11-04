@@ -1,0 +1,37 @@
+[
+  {
+    "id": "s3-public-access",
+    "title": "No S3 buckets publicly accessible",
+    "status": "FAIL",
+    "evidence": "1 of 4 buckets is publicly accessible: company-public-docs",
+    "checkedAt": "2026-11-04T10:30:00.000Z"
+  },
+  {
+    "id": "s3-encryption",
+    "title": "All S3 buckets encrypted",
+    "status": "FAIL",
+    "evidence": "1 of 4 buckets has no default encryption: temp-logs-archive",
+    "checkedAt": "2026-11-04T10:30:00.000Z"
+  },
+  {
+    "id": "iam-root-mfa",
+    "title": "IAM root account has MFA enabled",
+    "status": "PASS",
+    "evidence": "Root account MFA is enabled (AccountMFAEnabled = 1)",
+    "checkedAt": "2026-11-04T10:30:00.000Z"
+  },
+  {
+    "id": "cloudtrail-enabled",
+    "title": "CloudTrail is enabled",
+    "status": "PASS",
+    "evidence": "Multi-region trail \"management-events\" (home region us-east-1) is logging",
+    "checkedAt": "2026-11-04T10:30:00.000Z"
+  },
+  {
+    "id": "sg-admin-ports",
+    "title": "Security groups not open to 0.0.0.0/0 for SSH or RDP",
+    "status": "FAIL",
+    "evidence": "1 security group open to 0.0.0.0/0 on SSH/RDP: bastion-sg (sg-0b1c2d3e, eu-central-1): port 22 (SSH)",
+    "checkedAt": "2026-11-04T10:30:00.000Z"
+  }
+]

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getInstances } from './services/instances';
 import { getBuckets } from './services/buckets';
+import { getCisResults } from './services/cis-results';
 
 export default function App() {
   const [ec2Data, setEc2Data] = useState([]);
@@ -166,8 +167,103 @@ export default function App() {
             </table>
           </div>
         </section>
+
+        <CisSection />
       </div>
     </div>
+  );
+}
+
+const resultEdgeStyles = {
+  'PASS': 'border-l-green-500',
+  'FAIL': 'border-l-red-500',
+  'ERROR': 'border-l-amber-500',
+};
+
+function CisSection() {
+  const [results, setResults] = useState([]);
+  const [isRunning, setIsRunning] = useState(false);
+  const [error, setError] = useState(null);
+
+  // One request runs every check on the backend; results are shown together when it returns.
+  async function runTests() {
+    setResults([]);
+    setError(null);
+    setIsRunning(true);
+    try {
+      setResults(await getCisResults());
+    } catch (err) {
+      console.error("Failed to run CIS checks:", err);
+      setError(err.message);
+    } finally {
+      setIsRunning(false);
+    }
+  }
+
+  const passed = results.filter(r => r.status === 'PASS').length;
+  const failed = results.filter(r => r.status === 'FAIL').length;
+  const errored = results.filter(r => r.status === 'ERROR').length;
+  // Every result in a run shares the same checkedAt.
+  const lastRun = results[0]?.checkedAt ? new Date(results[0].checkedAt).toLocaleTimeString() : null;
+
+  return (
+    <section className="mt-12">
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-4">
+        <div>
+          <h2 className="text-xl font-semibold">CIS AWS Benchmark Tests</h2>
+          {!isRunning && results.length > 0 && (
+            <p className="text-xs text-slate-400 mt-1">
+              <span className="text-green-400">{passed} passed</span> · <span className="text-red-400">{failed} failed</span>
+              {errored > 0 && <> · <span className="text-amber-400">{errored} could not run</span></>}
+              {lastRun && <> · Last run {lastRun}</>}
+            </p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={runTests}
+          disabled={isRunning}
+          className="bg-sky-500 text-slate-900 font-semibold text-sm px-4 py-2 rounded-md hover:bg-sky-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isRunning ? 'Running...' : results.length > 0 || error ? 'Run Again' : 'Run Tests'}
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {!isRunning && !error && results.length === 0 && (
+          <p className="text-sm text-slate-400">
+            Run the CIS benchmark checks against your AWS account.
+          </p>
+        )}
+
+        {isRunning && (
+          <div
+            aria-live="polite"
+            className="flex items-center gap-3 border border-dashed border-slate-700 rounded-lg p-4 text-sm text-sky-400"
+          >
+            <span className="inline-block h-4 w-4 shrink-0 rounded-full border-2 border-sky-400 border-t-transparent animate-spin" />
+            Running CIS checks...
+          </div>
+        )}
+
+        {error && (
+          <p className="text-sm text-red-400">Failed to run CIS checks: {error}</p>
+        )}
+
+        {results.map(result => (
+          <div
+            key={result.id}
+            className={`bg-slate-800 border border-slate-700 border-l-4 ${resultEdgeStyles[result.status] || 'border-l-slate-500'} rounded-lg p-4`}
+          >
+            <div className="flex justify-between items-start gap-4">
+              <h3 className="font-semibold">{result.title}</h3>
+              <StatusBadge status={result.status} />
+            </div>
+            <p className="text-sm text-slate-400 mt-1">{result.evidence}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -193,6 +289,9 @@ function StatusBadge({ status }) {
     'Secure': 'bg-green-500/10 text-green-400',
     'Exposed': 'bg-red-500/10 text-red-400',
     'Warning': 'bg-amber-500/10 text-amber-400',
+    'PASS': 'bg-green-500/10 text-green-400',
+    'FAIL': 'bg-red-500/10 text-red-400',
+    'ERROR': 'bg-amber-500/10 text-amber-400',
   };
 
   return (
