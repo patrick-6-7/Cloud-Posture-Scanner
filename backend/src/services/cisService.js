@@ -1,4 +1,5 @@
 const logger = require('../utils/logger.js');
+const CisRunModel = require('../models/cisRunModel.js');
 
 // Order here is the order results are returned (and shown on the dashboard).
 const CHECKS = [
@@ -27,8 +28,8 @@ class CISService {
         return { id: check.id, title: check.title, ...outcome, checkedAt };
     }
 
-    // Runs every check in parallel. All results share one checkedAt so a run can later
-    // be stored and looked up by its date/time.
+    // Runs every check in parallel, then saves the run to DynamoDB. All results share one
+    // checkedAt, which becomes the run's sort key (runAt).
     async runAllChecks() {
         const startedAt = Date.now();
         const checkedAt = new Date().toISOString();
@@ -39,9 +40,22 @@ class CISService {
                         );
 
         const count = (status) => results.filter((r) => r.status === status).length;
-        const seconds = ((Date.now() - startedAt) / 1000).toFixed(1);
-        logger.info(`CIS run: ${count('PASS')} PASS, ${count('FAIL')} FAIL, ${count('ERROR')} ERROR (${seconds}s)`);
+        const summary = { pass: count('PASS'), fail: count('FAIL'), error: count('ERROR') };
+        const durationMs = Date.now() - startedAt;
+        logger.info(`CIS run: ${summary.pass} PASS, ${summary.fail} FAIL, ${summary.error} ERROR (${(durationMs / 1000).toFixed(1)}s)`);
+
+        await this.saveRun({ runAt: checkedAt, durationMs, summary, results });
         return results;
+    }
+
+    // A failed save shouldn't hide the live results, so it is logged rather than thrown.
+    async saveRun(run) {
+        try {
+            await CisRunModel.save(run);
+            logger.info(`CIS run saved (runAt ${run.runAt})`);
+        } catch (error) {
+            logger.warn(`CIS run not saved: ${error.name}: ${error.message}`);
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getInstances } from './services/instances';
 import { getBuckets } from './services/buckets';
-import { getCisResults } from './services/cis-results';
+import { getCisResults, CIS_COOLDOWN_SECONDS } from './services/cis-results';
 
 export default function App() {
   const [ec2Data, setEc2Data] = useState([]);
@@ -174,17 +174,42 @@ function CisSection() {
   const [results, setResults] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState(null);
+  const [cooldownUntil, setCooldownUntil] = useState(0);
+  const [now, setNow] = useState(0);
+
+  // While a cooldown is active, tick `now` so the button can count down; stops itself when done.
+  useEffect(() => {
+    if (cooldownUntil === 0) return;
+    const timer = setInterval(() => {
+      const current = Date.now();
+      setNow(current);
+      if (current >= cooldownUntil) clearInterval(timer);
+    }, 250);
+    return () => clearInterval(timer);
+  }, [cooldownUntil]);
+
+  const secondsLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
+
+  function startCooldown(seconds) {
+    const current = Date.now();
+    setNow(current);
+    setCooldownUntil(current + seconds * 1000);
+  }
 
   // One request runs every check on the backend; results are shown together when it returns.
   async function runTests() {
     setResults([]);
     setError(null);
     setIsRunning(true);
+    // The backend allows one run per CIS_COOLDOWN_SECONDS, counted from the start of a run.
+    startCooldown(CIS_COOLDOWN_SECONDS);
     try {
       setResults(await getCisResults());
     } catch (err) {
       console.error("Failed to run CIS checks:", err);
       setError(err.message);
+      // 429 from the backend (e.g. a run from another tab): wait as long as it says.
+      if (err.retryAfter) startCooldown(err.retryAfter);
     } finally {
       setIsRunning(false);
     }
@@ -212,10 +237,14 @@ function CisSection() {
         <button
           type="button"
           onClick={runTests}
-          disabled={isRunning}
+          disabled={isRunning || secondsLeft > 0}
           className="bg-sky-500 text-slate-900 font-semibold text-sm px-4 py-2 rounded-md hover:bg-sky-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isRunning ? 'Running...' : results.length > 0 || error ? 'Run Again' : 'Run Tests'}
+          {isRunning
+            ? 'Running...'
+            : secondsLeft > 0
+              ? `Run Again (${secondsLeft}s)`
+              : results.length > 0 || error ? 'Run Again' : 'Run Tests'}
         </button>
       </div>
 

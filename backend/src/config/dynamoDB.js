@@ -7,4 +7,9 @@ const docClient = DynamoDBDocumentClient.from(client, {
     marshallOptions: { removeUndefinedValues: true }
 });
 
-module.exports = { client, docClient };
+// Table names in one place (tables are created in the AWS console).
+const TABLES = {
+    CIS_RESULTS: 'cis-results'
+};
+
+module.exports = { client, docClient, TABLES };
