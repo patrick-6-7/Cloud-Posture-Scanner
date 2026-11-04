@@ -17,3 +17,6 @@ package-lock.json
 CLAUDE.md
 Assignment 2.docx
 .env
+
+# Logs (winston recreates backend/src/logs/ on startup)
+*.log

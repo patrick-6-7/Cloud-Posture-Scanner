@@ -37,8 +37,6 @@ export default function App() {
     fetchData();
   }, []);
 
-  const publicBucketsCount = s3Data.filter(b => b.policy === 'Public').length;
-
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 p-4 md:p-8 font-sans">
       <div className="max-w-6xl mx-auto">
@@ -51,14 +49,6 @@ export default function App() {
             Last Updated: {new Date().toLocaleString()}
           </div>
         </header>
-
-        {/* Stat Tiles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatTile label="Active EC2 Instances" value={loading ? '...' : ec2Data.length} />
-          <StatTile label="S3 Buckets" value={loading ? '...' : s3Data.length} />
-          <StatTile label="Public Buckets" value={loading ? '...' : publicBucketsCount} color="text-red-400" />
-          <StatTile label="Regions Active" value="3" />
-        </div>
 
         {/* EC2 Section */}
         <section className="mb-12">
@@ -272,15 +262,6 @@ const policyStyles = {
   'Private': 'bg-blue-500/10 text-blue-400',
   'Public': 'bg-red-500/10 text-red-400',
 };
-
-function StatTile({ label, value, color = "text-slate-100" }) {
-  return (
-    <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
-      <div className="text-slate-400 text-xs font-medium mb-1 uppercase tracking-wider">{label}</div>
-      <div className={`text-2xl font-bold font-mono ${color}`}>{value}</div>
-    </div>
-  );
-}
 
 function StatusBadge({ status }) {
   const styles = {

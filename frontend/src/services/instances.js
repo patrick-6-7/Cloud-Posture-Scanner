@@ -1,4 +1,4 @@
-import ec2Data from '../dummyData/ec2.json';
+import ec2Data from '../dummyData/EC2.json';
 // const API_URL = import.meta.env.VITE_API_URL;
 
 export const getInstances = async () => {
