@@ -1,10 +1,12 @@
-import ec2Data from '../dummyData/EC2.json';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getInstances = async () => {
-  try {
-    return ec2Data;
-  } catch (error) {
-    console.error('Error fetching instances:', error);
-    throw error;
+  const response = await fetch(`${API_URL}/instances`);
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    // Backend errors come back as { error, message } from its error middleware.
+    throw new Error(data?.message || `Request failed with status ${response.status}`);
   }
+  return data;
 };

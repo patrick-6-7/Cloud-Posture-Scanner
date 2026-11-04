@@ -11,6 +11,7 @@ class Loader {
             await DBLoader.loadDatabase();
             await MiddlewareLoader.loadMiddlewares(app);
             await RoutesLoader.loadRoutes(app);
+            await MiddlewareLoader.loadErrorHandlers(app);
             await AppLoader.loadApp(app, PORT);
         } catch (error) {
             logger.error('Failed To Load Server', error);

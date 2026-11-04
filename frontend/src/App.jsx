@@ -6,21 +6,30 @@ export default function App() {
   const [ec2Data, setEc2Data] = useState([]);
   const [s3Data, setS3Data] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ec2Error, setEc2Error] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const [instances, buckets] = await Promise.all([
-          getInstances(),
-          getBuckets()
-        ]);
-        setEc2Data(instances);
-        setS3Data(buckets);
-      } catch (error) {
-        console.error("Failed to fetch resources:", error);
-      } finally {
-        setLoading(false);
+      // Settled independently so a failing API call doesn't blank the other table.
+      const [instances, buckets] = await Promise.allSettled([
+        getInstances(),
+        getBuckets()
+      ]);
+
+      if (instances.status === 'fulfilled') {
+        setEc2Data(instances.value);
+      } else {
+        console.error("Failed to fetch instances:", instances.reason);
+        setEc2Error(instances.reason.message);
       }
+
+      if (buckets.status === 'fulfilled') {
+        setS3Data(buckets.value);
+      } else {
+        console.error("Failed to fetch buckets:", buckets.reason);
+      }
+
+      setLoading(false);
     }
     fetchData();
   }, []);
@@ -70,13 +79,21 @@ export default function App() {
                   <tr>
                     <td colSpan="6" className="px-4 py-8 text-center text-slate-400">Loading instances...</td>
                   </tr>
+                ) : ec2Error ? (
+                  <tr>
+                    <td colSpan="6" className="px-4 py-8 text-center text-red-400">Failed to load instances: {ec2Error}</td>
+                  </tr>
+                ) : ec2Data.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="px-4 py-8 text-center text-slate-400">No EC2 instances found.</td>
+                  </tr>
                 ) : (
                   ec2Data.map((inst) => (
                     <tr key={inst.id} className="hover:bg-slate-700/30 transition-colors">
                       <td className="px-4 py-3 font-mono text-sky-400">{inst.id}</td>
                       <td className="px-4 py-3">{inst.type}</td>
                       <td className="px-4 py-3">{inst.region}</td>
-                      <td className="px-4 py-3 font-mono text-sky-400">{inst.ip}</td>
+                      <td className="px-4 py-3 font-mono text-sky-400">{inst.ip ?? '—'}</td>
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-1">
                           {inst.sgs.map(sg => (
