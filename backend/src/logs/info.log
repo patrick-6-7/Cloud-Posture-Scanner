@@ -221,3 +221,75 @@ AuthFailure: AWS was not able to validate the provided access credentials
 
 4 NOVEMBER 2026 | 12:53 PM [INFO]: Server is running at http://localhost:5000
 4 NOVEMBER 2026 | 12:53 PM [INFO]: EC2 scan: 1 instances across 17/17 regions (3.1s)
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Loading Server... 
+
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Initializing Server... 
+
+4 NOVEMBER 2026 | 1:10 PM [INFO]: DynamoDB connected (us-east-1) - tables: instances 
+
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Loading Middlewares...
+4 NOVEMBER 2026 | 1:10 PM [INFO]: All Middlewares Loaded...
+
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Mounting Routes...
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Health Router mounted at: /health
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Instance Router mounted at: /instances
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Bucket Router mounted at: /buckets
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Routes Mounted... 
+
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Error Handler Loaded... 
+
+4 NOVEMBER 2026 | 1:10 PM [INFO]: Server is running at http://localhost:5000
+4 NOVEMBER 2026 | 1:10 PM [INFO]: S3 scan: 0 buckets (2.8s)
+4 NOVEMBER 2026 | 1:10 PM [INFO]: EC2 scan: 1 instances across 17/17 regions (3.3s)
+4 NOVEMBER 2026 | 1:10 PM [WARN]: S3 encryption check failed for denied: AccessDenied
+4 NOVEMBER 2026 | 1:10 PM [WARN]: S3 access check failed for denied: AccessDenied
+4 NOVEMBER 2026 | 1:10 PM [ERROR]: Request failed: GET /buckets The AWS Access Key Id you provided does not exist in our records.
+InvalidAccessKeyId: The AWS Access Key Id you provided does not exist in our records.
+    at ProtocolLib.getErrorSchemaOrThrowBaseException (D:\me\Visiblaze\backend\node_modules\@aws-sdk\core\dist-cjs\submodules\protocols\index.js:79:67)
+    at S3RestXmlProtocol.handleError (D:\me\Visiblaze\backend\node_modules\@aws-sdk\core\dist-cjs\submodules\protocols\index.js:1390:65)
+    at S3RestXmlProtocol.deserializeResponse (D:\me\Visiblaze\backend\node_modules\@smithy\core\dist-cjs\submodules\protocols\index.js:410:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async D:\me\Visiblaze\backend\node_modules\@smithy\core\dist-cjs\submodules\schema\index.js:23:24
+    at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\middleware-sdk-s3\dist-cjs\submodules\s3\index.js:380:20
+    at async D:\me\Visiblaze\backend\node_modules\@smithy\core\dist-cjs\submodules\retry\index.js:179:50
+    at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\middleware-sdk-s3\dist-cjs\submodules\s3\index.js:62:28
+    at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\middleware-sdk-s3\dist-cjs\submodules\s3\index.js:89:20
+    at async D:\me\Visiblaze\backend\node_modules\@aws-sdk\core\dist-cjs\submodules\client\index.js:127:26
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Loading Server... 
+
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Initializing Server... 
+
+4 NOVEMBER 2026 | 1:25 PM [INFO]: DynamoDB connected (us-east-1) - tables: instances 
+
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Loading Middlewares...
+4 NOVEMBER 2026 | 1:25 PM [INFO]: All Middlewares Loaded...
+
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Mounting Routes...
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Health Router mounted at: /health
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Instance Router mounted at: /instances
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Bucket Router mounted at: /buckets
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Routes Mounted... 
+
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Error Handler Loaded... 
+
+4 NOVEMBER 2026 | 1:25 PM [INFO]: Server is running at http://localhost:5000
+4 NOVEMBER 2026 | 1:25 PM [INFO]: S3 scan: 0 buckets (2.9s)
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Loading Server... 
+
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Initializing Server... 
+
+4 NOVEMBER 2026 | 1:30 PM [INFO]: DynamoDB connected (us-east-1) - tables: instances 
+
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Loading Middlewares...
+4 NOVEMBER 2026 | 1:30 PM [INFO]: All Middlewares Loaded...
+
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Mounting Routes...
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Health Router mounted at: /health
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Instance Router mounted at: /instances
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Bucket Router mounted at: /buckets
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Routes Mounted... 
+
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Error Handler Loaded... 
+
+4 NOVEMBER 2026 | 1:30 PM [INFO]: Server is running at http://localhost:5000
+4 NOVEMBER 2026 | 1:30 PM [INFO]: S3 scan: 0 buckets (2.9s)

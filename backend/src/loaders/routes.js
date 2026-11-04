@@ -2,12 +2,14 @@ const logger = require('../utils/logger.js');
 
 const healthRouter = require('../routes/health.js');
 const instanceRouter = require('../routes/instances.js');
+const bucketRouter = require('../routes/buckets.js');
 
 class RoutesLoader {
     constructor() {
         this.routes = [
             { path: '/health',         router: healthRouter,        name: 'Health Router'        },
             { path: '/instances',      router: instanceRouter,      name: 'Instance Router'      },
+            { path: '/buckets',        router: bucketRouter,        name: 'Bucket Router'        },
         ];
     }
 

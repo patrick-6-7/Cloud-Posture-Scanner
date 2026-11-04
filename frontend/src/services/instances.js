@@ -1,3 +1,4 @@
+// import ec2Data from '../dummyData/ec2.json';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const getInstances = async () => {
@@ -9,4 +10,5 @@ export const getInstances = async () => {
     throw new Error(data?.message || `Request failed with status ${response.status}`);
   }
   return data;
+  // return ec2Data;
 };

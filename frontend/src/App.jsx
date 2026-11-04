@@ -7,6 +7,7 @@ export default function App() {
   const [s3Data, setS3Data] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ec2Error, setEc2Error] = useState(null);
+  const [s3Error, setS3Error] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -27,6 +28,7 @@ export default function App() {
         setS3Data(buckets.value);
       } else {
         console.error("Failed to fetch buckets:", buckets.reason);
+        setS3Error(buckets.reason.message);
       }
 
       setLoading(false);
@@ -52,8 +54,8 @@ export default function App() {
         {/* Stat Tiles */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatTile label="Active EC2 Instances" value={loading ? '...' : ec2Data.length} />
-          <StatTile label="S3 Buckets" value={s3Data.length} />
-          <StatTile label="Public Buckets" value={publicBucketsCount} color="text-red-400" />
+          <StatTile label="S3 Buckets" value={loading ? '...' : s3Data.length} />
+          <StatTile label="Public Buckets" value={loading ? '...' : publicBucketsCount} color="text-red-400" />
           <StatTile label="Regions Active" value="3" />
         </div>
 
@@ -131,21 +133,35 @@ export default function App() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700">
-                {s3Data.map((bucket) => (
-                  <tr key={bucket.name} className="hover:bg-slate-700/30 transition-colors">
-                    <td className="px-4 py-3 font-mono text-sky-400">{bucket.name}</td>
-                    <td className="px-4 py-3">{bucket.region}</td>
-                    <td className="px-4 py-3">{bucket.encryption}</td>
-                    <td className="px-4 py-3">
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${bucket.policy === 'Private' ? 'bg-blue-500/10 text-blue-400' : 'bg-red-500/10 text-red-400'}`}>
-                        {bucket.policy}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <StatusBadge status={bucket.status} />
-                    </td>
+                {loading ? (
+                  <tr>
+                    <td colSpan="5" className="px-4 py-8 text-center text-slate-400">Loading buckets...</td>
                   </tr>
-                ))}
+                ) : s3Error ? (
+                  <tr>
+                    <td colSpan="5" className="px-4 py-8 text-center text-red-400">Failed to load buckets: {s3Error}</td>
+                  </tr>
+                ) : s3Data.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="px-4 py-8 text-center text-slate-400">No S3 buckets found.</td>
+                  </tr>
+                ) : (
+                  s3Data.map((bucket) => (
+                    <tr key={bucket.name} className="hover:bg-slate-700/30 transition-colors">
+                      <td className="px-4 py-3 font-mono text-sky-400">{bucket.name}</td>
+                      <td className="px-4 py-3">{bucket.region}</td>
+                      <td className="px-4 py-3">{bucket.encryption}</td>
+                      <td className="px-4 py-3">
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${policyStyles[bucket.policy] || 'bg-slate-700 text-slate-300'}`}>
+                          {bucket.policy}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <StatusBadge status={bucket.status} />
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -154,6 +170,12 @@ export default function App() {
     </div>
   );
 }
+
+// 'Unknown' (backend couldn't read the bucket's settings) falls back to a neutral pill.
+const policyStyles = {
+  'Private': 'bg-blue-500/10 text-blue-400',
+  'Public': 'bg-red-500/10 text-red-400',
+};
 
 function StatTile({ label, value, color = "text-slate-100" }) {
   return (
